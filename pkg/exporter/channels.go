@@ -67,7 +67,7 @@ func (c *ChannelsCollector) Describe(ch chan<- *prometheus.Desc, nodekey string)
 		c.unsettled = prometheus.NewDesc(
 			prometheus.BuildFQName(Namespace, Channels, "unsettled_satoshis"),
 			"The unsettled balance.",
-			[]string{"channel_id"},
+			[]string{"channel_id", "direction"},
 			static,
 		)
 		c.sent = prometheus.NewDesc(
@@ -160,12 +160,23 @@ func (c *ChannelsCollector) Collect(client *lnc.Client, ch chan<- prometheus.Met
 		ch <- gauge(c.cap, channel.Capacity, id)
 		ch <- gauge(c.local, channel.LocalBalance, id)
 		ch <- gauge(c.remote, channel.RemoteBalance, id)
-		ch <- gauge(c.unsettled, channel.UnsettledBalance, id)
 		ch <- gauge(c.sent, channel.TotalSatoshisSent, id)
 		ch <- gauge(c.received, channel.TotalSatoshisReceived, id)
 		ch <- gauge(c.lifetime, channel.Lifetime, id)
 		ch <- gauge(c.uptime, channel.Uptime, id)
 		ch <- gauge(c.updates, channel.NumUpdates, id)
+
+		uin := int64(0)
+		uout := int64(0)
+		for _, htlc := range channel.PendingHtlcs {
+			if htlc.Incoming {
+				uin += htlc.Amount
+			} else {
+				uout += htlc.Amount
+			}
+		}
+		ch <- gauge(c.unsettled, float64(uin), id, "incoming")
+		ch <- gauge(c.unsettled, float64(uout), id, "outgoing")
 	}
 
 	fees, err := client.GetFeereport()

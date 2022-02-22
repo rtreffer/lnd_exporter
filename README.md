@@ -83,6 +83,7 @@ All metrics have a `channel_id` label to group channel related data.
 | `lnd_channel_local_balace_satoshis` | `value` | the local channel capacity |
 | `lnd_channel_remote_balace_satoshis` | `value` | the remote channel capacity |
 | `lnd_channel_unsettled_satoshis` | `value` | the sum of open HTLC transactions |
+| | `direction` | `incoming`/`outgoing` |
 | `lnd_channel_sent_satoshis_total` | `value` | the sum of sent satoshis |
 | `lnd_channel_received_satoshis_total` | `value` | the sum of received satoshis |
 | `lnd_channel_lifetime_seconds` | `value` | the lifetime of the channel |
