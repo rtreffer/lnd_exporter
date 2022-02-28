@@ -51,7 +51,7 @@ func NewClient(addr, crt, macroon string) (*Client, error) {
 		return nil, err
 	}
 
-	constrainedMac, err := macaroons.AddConstraints(mac, macaroons.TimeoutConstraint(60))
+	constrainedMac, err := macaroons.AddConstraints(mac, macaroons.TimeoutConstraint(300))
 	if err != nil {
 		return nil, err
 	}
