@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/go-kit/log v0.1.0
-	github.com/lightningnetwork/lnd v0.14.2-beta.rc2
+	github.com/lightningnetwork/lnd v0.14.3-beta
 	github.com/prometheus/client_golang v1.12.1
 	github.com/prometheus/common v0.32.1
 	github.com/prometheus/exporter-toolkit v0.7.1
